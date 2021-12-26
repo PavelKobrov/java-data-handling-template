@@ -1,5 +1,7 @@
 package com.epam.izh.rd.online.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,7 +16,9 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public String parseDate(LocalDate localDate) {
-        return null;
+        String parseDate;
+        parseDate = String.format("%1$te-%1$tm-%1$tY", localDate);
+        return parseDate;
     }
 
     /**
@@ -25,7 +29,8 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public LocalDateTime parseString(String string) {
-        return null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return LocalDateTime.parse(string, formatter);
     }
 
     /**
@@ -37,7 +42,9 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public String convertToCustomFormat(LocalDate localDate, DateTimeFormatter formatter) {
-        return null;
+        String parseDate;
+        parseDate = localDate.format(formatter);
+        return parseDate;
     }
 
     /**
@@ -47,7 +54,18 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public long getNextLeapYear() {
-        return 0;
+        LocalDate localDate = LocalDate.now();
+        int year = localDate.getYear();
+        boolean notLeap=!localDate.isLeapYear();
+        while (notLeap){
+            year++;
+            localDate=localDate.withYear(year);
+            if (localDate.isLeapYear()) {
+                notLeap=false;
+            }
+
+        }
+        return year;
     }
 
     /**
@@ -57,7 +75,9 @@ public class SimpleDateService implements DateService {
      */
     @Override
     public long getSecondsInYear(int year) {
-        return 0;
+        LocalDate localDate = LocalDate.now();
+        localDate = localDate.withYear(year);
+        return (long) localDate.lengthOfYear() *24*60*60;
     }
 
 
